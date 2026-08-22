@@ -27,7 +27,7 @@ import (
 	"github.com/goplus/lib/c"
 )
 
-// Sem represents a semaphore.
+// Sem represents a POSIX semaphore.
 type Sem C.sem_t
 
 // initializes the unnamed semaphore at the address
