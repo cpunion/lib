@@ -22,10 +22,6 @@ import (
 	"github.com/goplus/lib/c"
 )
 
-const (
-	LLGoPackage = "link: $(pkg-config --libs bdw-gc); -lgc"
-)
-
 // -----------------------------------------------------------------------------
 
 //go:linkname Init C.GC_init
