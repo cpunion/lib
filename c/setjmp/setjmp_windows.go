@@ -29,17 +29,17 @@ const LLGoPackage = "decl"
 type JmpBuf [32]uintptr
 type SigjmpBuf = JmpBuf
 
-//go:linkname Setjmp C._setjmp
+//go:linkname Setjmp llgo.setjmp
 func Setjmp(env *JmpBuf) c.Int
 
-//go:linkname Longjmp C.longjmp
+//go:linkname Longjmp llgo.longjmp
 func Longjmp(env *JmpBuf, val c.Int)
 
-// Windows has no signal mask to preserve. The CRT _setjmp routine ignores the
-// additional register argument supplied for the POSIX-compatible signature.
+// Windows has no signal mask to preserve. LLGo lowers these intrinsics to the
+// architecture-specific Windows context save/restore pair used by its runtime.
 //
-//go:linkname Sigsetjmp C._setjmp
+//go:linkname Sigsetjmp llgo.sigsetjmp
 func Sigsetjmp(env *SigjmpBuf, savemask c.Int) c.Int
 
-//go:linkname Siglongjmp C.longjmp
+//go:linkname Siglongjmp llgo.siglongjmp
 func Siglongjmp(env *SigjmpBuf, val c.Int)
