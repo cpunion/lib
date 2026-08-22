@@ -1,5 +1,4 @@
-//go:build windows
-// +build windows
+//go:build !windows
 
 /*
  * Copyright (c) 2026 The GoPlus Authors (goplus.org). All rights reserved.
@@ -21,38 +20,17 @@ package c
 
 import _ "unsafe"
 
-const (
-	LLGoPackage = "link"
-	LLGoFiles   = "_wrap/stdio_windows.c"
-)
-
-// The Universal CRT exposes standard streams through __acrt_iob_func rather
-// than the Unix stdin/stdout/stderr data symbols.
-
-//go:linkname acrtIobFunc C.__acrt_iob_func
-func acrtIobFunc(index Uint) FilePtr
-
-var (
-	Stdin  = acrtIobFunc(0)
-	Stdout = acrtIobFunc(1)
-	Stderr = acrtIobFunc(2)
-)
-
-// The Universal CRT implements formatted stdio through inline header helpers.
-// Bind to package-private C wrappers so user code remains free to define the
-// historical printf/fprintf symbols itself.
-
-//go:linkname Sprintf C.llgo_c_sprintf
+//go:linkname Sprintf C.sprintf
 func Sprintf(s *Char, format *Char, __llgo_va_list ...any) Int
 
-//go:linkname Snprintf C.llgo_c_snprintf
+//go:linkname Snprintf C.snprintf
 func Snprintf(s *Char, n uintptr, format *Char, __llgo_va_list ...any) Int
 
-//go:linkname Vsnprintf C.llgo_c_vsnprintf
+//go:linkname Vsnprintf C.vsnprintf
 func Vsnprintf(s *Char, n uintptr, format *Char, ap Pointer) Int
 
-//go:linkname Printf C.llgo_c_printf
+//go:linkname Printf C.printf
 func Printf(format *Char, __llgo_va_list ...any) Int
 
-//go:linkname Fprintf C.llgo_c_fprintf
+//go:linkname Fprintf C.fprintf
 func Fprintf(fp FilePtr, format *Char, __llgo_va_list ...any) Int

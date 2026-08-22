@@ -166,15 +166,6 @@ func Strtok(s, delim *Char) *Char
 //go:linkname Strerror C.strerror
 func Strerror(errnum Int) *Char
 
-//go:linkname Sprintf C.sprintf
-func Sprintf(s *Char, format *Char, __llgo_va_list ...any) Int
-
-//go:linkname Snprintf C.snprintf
-func Snprintf(s *Char, n uintptr, format *Char, __llgo_va_list ...any) Int
-
-//go:linkname Vsnprintf C.vsnprintf
-func Vsnprintf(s *Char, n uintptr, format *Char, ap Pointer) Int
-
 // -----------------------------------------------------------------------------
 
 // GoString converts a C string to a Go string.
@@ -222,12 +213,6 @@ func Qsort(base Pointer, count, elem uintptr, compar func(a, b Pointer) Int)
 func Atoi(s *Char) Int
 
 // -----------------------------------------------------------------------------
-
-//go:linkname Printf C.printf
-func Printf(format *Char, __llgo_va_list ...any) Int
-
-//go:linkname Fprintf C.fprintf
-func Fprintf(fp FilePtr, format *Char, __llgo_va_list ...any) Int
 
 //go:linkname Fwrite C.fwrite
 func Fwrite(data Pointer, size, count uintptr, fp FilePtr) uintptr
