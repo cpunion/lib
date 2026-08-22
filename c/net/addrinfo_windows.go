@@ -10,11 +10,6 @@ import (
 	"github.com/goplus/lib/c"
 )
 
-const (
-	LLGoPackage = "link: -lws2_32"
-	LLGoFiles   = "_wrap/addrinfo_windows.c"
-)
-
 // AddrInfo matches the Winsock ADDRINFOA layout. ai_addrlen is size_t on
 // Windows, unlike the socklen_t field used by Unix implementations.
 type AddrInfo struct {

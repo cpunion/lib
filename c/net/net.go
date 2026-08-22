@@ -1,3 +1,5 @@
+//go:build !windows
+
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
  *
@@ -21,6 +23,13 @@ import (
 
 	"github.com/goplus/lib/c"
 )
+
+type (
+	SocketT  = c.Int
+	SocklenT = c.Uint
+)
+
+const InvalidSocket SocketT = -1
 
 const (
 	AF_UNSPEC          = 0       // unspecified
@@ -151,19 +160,22 @@ type Hostent struct {
 }
 
 //go:linkname Socket C.socket
-func Socket(domain c.Int, typ c.Int, protocol c.Int) c.Int
+func Socket(domain c.Int, typ c.Int, protocol c.Int) SocketT
 
 //go:linkname Bind C.bind
-func Bind(sockfd c.Int, addr *SockaddrIn, addrlen c.Uint) c.Int
+func Bind(sockfd SocketT, addr *SockaddrIn, addrlen SocklenT) c.Int
 
 //go:linkname Connect C.connect
-func Connect(sockfd c.Int, addr *SockAddr, addrlen c.Uint) c.Int
+func Connect(sockfd SocketT, addr *SockAddr, addrlen SocklenT) c.Int
 
 //go:linkname Listen C.listen
-func Listen(sockfd c.Int, backlog c.Int) c.Int
+func Listen(sockfd SocketT, backlog c.Int) c.Int
 
 //go:linkname Accept C.accept
-func Accept(sockfd c.Int, addr *SockaddrIn, addrlen *c.Uint) c.Int
+func Accept(sockfd SocketT, addr *SockaddrIn, addrlen *SocklenT) SocketT
+
+//go:linkname Close C.close
+func Close(sockfd SocketT) c.Int
 
 //go:linkname GetHostByName C.gethostbyname
 func GetHostByName(name *c.Char) *Hostent
@@ -177,13 +189,13 @@ func InetNtop(af c.Int, src c.Pointer, dst *c.Char, size c.Uint) *c.Char
 func InetAddr(s *c.Char) c.Uint
 
 //go:linkname Send C.send
-func Send(c.Int, c.Pointer, uintptr, c.Int) c.Long
+func Send(SocketT, c.Pointer, uintptr, c.Int) c.Long
 
 //go:linkname Recv C.recv
-func Recv(c.Int, c.Pointer, uintptr, c.Int) c.Long
+func Recv(SocketT, c.Pointer, uintptr, c.Int) c.Long
 
 //go:linkname SetSockOpt C.setsockopt
-func SetSockOpt(socket c.Int, level c.Int, optionName c.Int, optionValue c.Pointer, sockLen c.Uint) c.Int
+func SetSockOpt(socket SocketT, level c.Int, optionName c.Int, optionValue c.Pointer, sockLen SocklenT) c.Int
 
 //go:linkname Ntohs C.ntohs
 func Ntohs(x uint16) uint16
