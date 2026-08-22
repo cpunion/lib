@@ -39,9 +39,6 @@ var OnceInit Once
 //go:linkname winOnce C.llgo_win_once
 func winOnce(once *Once, f *func()) c.Int
 
-//export llgo_win_once_invoke
-func llgo_win_once_invoke(f *func()) { (*f)() }
-
 func (o *Once) Do(f func()) c.Int { return winOnce(o, &f) }
 
 type MutexType c.Int
@@ -181,22 +178,26 @@ func (cond *Cond) TimedWait(m *Mutex, deadline *ctime.Timespec) c.Int {
 	return winCondTimedWait(cond, m, deadline)
 }
 
-// Sem owns a pointer to a Windows semaphore sidecar allocated by the wrapper.
-type Sem struct{ state uintptr }
+// Sem stores the Windows semaphore handle and its observable count. The handle
+// is closed by Destroy; unlike the native SRW types, Sem must be initialized.
+type Sem struct {
+	handle uintptr
+	count  c.Long
+}
 
-//go:linkname winSemInit C.llgo_win_sem_init
+//go:linkname winSemInit C.llgo_libc_sem_init
 func winSemInit(*Sem, c.Int, c.Uint) c.Int
 
-//go:linkname winSemDestroy C.llgo_win_sem_destroy
+//go:linkname winSemDestroy C.llgo_libc_sem_destroy
 func winSemDestroy(*Sem) c.Int
 
-//go:linkname winSemPost C.llgo_win_sem_post
+//go:linkname winSemPost C.llgo_libc_sem_post
 func winSemPost(*Sem) c.Int
 
-//go:linkname winSemWait C.llgo_win_sem_wait
+//go:linkname winSemWait C.llgo_libc_sem_wait
 func winSemWait(*Sem, c.Int) c.Int
 
-//go:linkname winSemValue C.llgo_win_sem_value
+//go:linkname winSemValue C.llgo_libc_sem_value
 func winSemValue(*Sem, *c.Int) c.Int
 
 func (s *Sem) Init(shared c.Int, value c.Uint) c.Int { return winSemInit(s, shared, value) }
