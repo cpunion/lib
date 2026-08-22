@@ -22,7 +22,9 @@ package c
 import _ "unsafe"
 
 const (
-	LLGoPackage = "link"
+	// Standard-stream pointers require package initialization; declaration-only
+	// and link-only packages intentionally skip init functions.
+	LLGoPackage = true
 	LLGoFiles   = "_wrap/stdio_windows.c"
 )
 
