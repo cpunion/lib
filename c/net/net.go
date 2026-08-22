@@ -23,10 +23,6 @@ import (
 )
 
 const (
-	LLGoPackage = true
-)
-
-const (
 	AF_UNSPEC          = 0       // unspecified
 	AF_UNIX            = 1       // local to host (pipes)
 	AF_LOCAL           = AF_UNIX // backward compatibility
@@ -200,24 +196,5 @@ func Ntohl(x c.Uint) c.Uint
 
 //go:linkname Htonl C.htonl
 func Htonl(x c.Uint) c.Uint
-
-// -----------------------------------------------------------------------------
-
-type AddrInfo struct {
-	Flags     c.Int
-	Family    c.Int
-	SockType  c.Int
-	Protocol  c.Int
-	AddrLen   c.Uint
-	CanOnName *c.Char
-	Addr      *SockAddr
-	Next      *AddrInfo
-}
-
-//go:linkname Getaddrinfo C.getaddrinfo
-func Getaddrinfo(host *c.Char, port *c.Char, addrInfo *AddrInfo, result **AddrInfo) c.Int
-
-//go:linkname Freeaddrinfo C.freeaddrinfo
-func Freeaddrinfo(addrInfo *AddrInfo) c.Int
 
 // -----------------------------------------------------------------------------
