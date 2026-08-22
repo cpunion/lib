@@ -26,7 +26,7 @@ int llgoErrno(void) { return *_errno(); }
 
 int llgo_os_clearenv(void)
 {
-    char **env = *_p__environ();
+    char **env = *__p__environ();
     while (env != NULL && env[0] != NULL) {
         const char *entry = env[0];
         const char *separator = strchr(entry, '=');
@@ -42,7 +42,7 @@ int llgo_os_clearenv(void)
         int result = _putenv_s(name, "");
         free(name);
         if (result != 0) return -1;
-        env = *_p__environ();
+        env = *__p__environ();
     }
     return 0;
 }
