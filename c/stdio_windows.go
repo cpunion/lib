@@ -21,7 +21,11 @@ package c
 
 import _ "unsafe"
 
-const LLGoPackage = true
+// MSVC keeps the legacy out-of-line formatted stdio entry points in a
+// compatibility library. Linking it from the C declaration package lets the
+// archive satisfy plain C.printf/C.fprintf references without defining global
+// wrappers that could collide with user C code.
+const LLGoPackage = "link: -llegacy_stdio_definitions"
 
 // The Universal CRT exposes standard streams through __acrt_iob_func rather
 // than the Unix stdin/stdout/stderr data symbols.
