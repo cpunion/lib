@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 The GoPlus Authors. Licensed under Apache-2.0. */
 
 #define WIN32_LEAN_AND_MEAN
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <limits.h>
 #include <stdint.h>

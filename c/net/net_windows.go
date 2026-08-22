@@ -111,8 +111,8 @@ type SockAddr struct {
 type Hostent struct {
 	Name     *c.Char
 	Aliases  **c.Char
-	AddrType c.Int
-	Length   c.Int
+	AddrType int16
+	Length   int16
 	AddrList **c.Char
 }
 
