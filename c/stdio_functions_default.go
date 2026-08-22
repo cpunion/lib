@@ -1,5 +1,3 @@
-//go:build !windows
-
 /*
  * Copyright (c) 2026 The GoPlus Authors (goplus.org). All rights reserved.
  *

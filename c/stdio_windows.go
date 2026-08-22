@@ -21,12 +21,11 @@ package c
 
 import _ "unsafe"
 
-const (
-	// Standard-stream pointers require package initialization; declaration-only
-	// and link-only packages intentionally skip init functions.
-	LLGoPackage = true
-	LLGoFiles   = "_wrap/stdio_windows.c"
-)
+// Standard-stream pointers require package initialization; declaration-only
+// and link-only packages intentionally skip init functions. The LLGo Windows
+// linker supplies legacy_stdio_definitions.lib for the out-of-line formatted
+// stdio symbols shared with the other platforms.
+const LLGoPackage = true
 
 // The Universal CRT exposes standard streams through __acrt_iob_func rather
 // than the Unix stdin/stdout/stderr data symbols.
@@ -39,22 +38,3 @@ var (
 	Stdout = acrtIobFunc(1)
 	Stderr = acrtIobFunc(2)
 )
-
-// The Universal CRT implements formatted stdio through inline header helpers.
-// Bind to package-private C wrappers so user code remains free to define the
-// historical printf/fprintf symbols itself.
-
-//go:linkname Sprintf C.llgo_c_sprintf
-func Sprintf(s *Char, format *Char, __llgo_va_list ...any) Int
-
-//go:linkname Snprintf C.llgo_c_snprintf
-func Snprintf(s *Char, n uintptr, format *Char, __llgo_va_list ...any) Int
-
-//go:linkname Vsnprintf C.llgo_c_vsnprintf
-func Vsnprintf(s *Char, n uintptr, format *Char, ap Pointer) Int
-
-//go:linkname Printf C.llgo_c_printf
-func Printf(format *Char, __llgo_va_list ...any) Int
-
-//go:linkname Fprintf C.llgo_c_fprintf
-func Fprintf(fp FilePtr, format *Char, __llgo_va_list ...any) Int
