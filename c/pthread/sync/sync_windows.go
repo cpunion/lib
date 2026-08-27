@@ -37,9 +37,9 @@ type Once struct{ state uintptr }
 var OnceInit Once
 
 //go:linkname winOnce C.llgo_win_once
-func winOnce(once *Once, f *func()) c.Int
+func winOnce(once *Once, f OnceFunc) c.Int
 
-func (o *Once) Do(f func()) c.Int { return winOnce(o, &f) }
+func (o *Once) Do(f OnceFunc) c.Int { return winOnce(o, f) }
 
 type MutexType c.Int
 

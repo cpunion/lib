@@ -42,7 +42,7 @@ type Once C.pthread_once_t
 var OnceInit Once
 
 // llgo:link (*Once).Do C.pthread_once
-func (o *Once) Do(f func()) c.Int { return 0 }
+func (o *Once) Do(f OnceFunc) c.Int { return 0 }
 
 // -----------------------------------------------------------------------------
 
