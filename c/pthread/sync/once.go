@@ -16,9 +16,35 @@
 
 package sync
 
+import (
+	"runtime"
+
+	"github.com/goplus/lib/c"
+)
+
 // OnceFunc is a native C callback accepted by Once.Do. It cannot carry a Go
-// closure environment; use the Go sync.Once type when the callback captures
-// values.
+// closure environment; use Once.DoFunc or the Go sync.Once type when the
+// callback captures values.
 //
 //llgo:type C
 type OnceFunc func()
+
+//llgo:type C
+type onceContextFunc func(c.Pointer)
+
+type onceContext struct {
+	fn func()
+}
+
+func invokeOnceContext(data c.Pointer) {
+	(*onceContext)(data).fn()
+}
+
+// DoFunc invokes f once while keeping its Go closure environment above the C
+// ABI boundary. Code that does not need a closure should use Do directly.
+func (o *Once) DoFunc(f func()) c.Int {
+	context := &onceContext{fn: f}
+	result := doOnceContext(o, invokeOnceContext, c.Pointer(context))
+	runtime.KeepAlive(context)
+	return result
+}
