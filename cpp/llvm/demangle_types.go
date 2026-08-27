@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
+ * Copyright (c) 2026 The GoPlus Authors (goplus.org). All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,17 @@
 
 package llvm
 
-// -----------------------------------------------------------------------------
+import "github.com/goplus/lib/c"
 
-// StringView represents a C++ std::string_view object.
-type StringView = string
-
-// -----------------------------------------------------------------------------
+/*
+	enum MSDemangleFlags {
+	  MSDF_None = 0,
+	  MSDF_DumpBackrefs = 1 << 0,
+	  MSDF_NoAccessSpecifier = 1 << 1,
+	  MSDF_NoCallingConvention = 1 << 2,
+	  MSDF_NoReturnType = 1 << 3,
+	  MSDF_NoMemberType = 1 << 4,
+	  MSDF_NoVariableType = 1 << 5,
+	};
+*/
+type MSDemangleFlags c.Int
